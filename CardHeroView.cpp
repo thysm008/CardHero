@@ -1108,7 +1108,7 @@ void CCardHeroView::OnBnClickedAction2()
 								   MessageBox("行动力不足，无法释放！");
 							   }
 							   else{
-								   if (player_bufflist2[0] == 0){//未骑乘
+								   if (player_tiance->getStatus() == 0){//未骑乘
 									   player2_skill_record[nSel_player2] = 1;//标记该技能本回合已释放
 									   //player_bufflist2[12] = 1;//标记技能所带来的的buff
 									   player_bufflist1[12] = 1;
@@ -1176,10 +1176,10 @@ void CCardHeroView::OnBnClickedAction2()
 									MessageBox("行动力不足，无法释放！");
 								}
 								else{
-									if (player_bufflist2[0] == 1){//骑乘
+									if (player_tiance->getStatus() == 1){//骑乘
 										player_bufflist1[11] = 0;//解除技能所带来的的buff
 										player2_skill_record[nSel_player2] = 1;//标记该技能本回合已释放
-										player_bufflist2[14] = 3;//标记技能所带来的的buff
+										player_bufflist1[14] = 3;//标记技能所带来的的buff
 										player2_cd_record[nSel_player2] = 7;//技能冷却时间
 										player_tiance->subAct(2);//释放该技能消耗的行动力
 										outFightDairy(player_tiance->getCharId(), player_tiance->getCharId(), "破坚阵", 0, player_tiance->getCounterDamage(), player_cangjian->getSufferDamage(), fight_dairy_count++);
@@ -1202,7 +1202,7 @@ void CCardHeroView::OnBnClickedAction2()
 									MessageBox("行动力不足，无法释放！");
 								}
 								else{
-									if (player_bufflist2[0] == 1){//未骑乘
+									if (player_tiance->getStatus() == 0){//未骑乘
 										player2_skill_record[nSel_player2] = 1;//标记该技能本回合已释放
 										outFightDairy(player_tiance->getCharId(), player_cangjian->getCharId(), "霹雳", 4, player_tiance->getCounterDamage(), player_cangjian->getSufferDamage(), fight_dairy_count++);
 										if (player_bufflist2[3] != 0){//徐如林buff的林状态，打出伤害回复1点血量
@@ -1230,7 +1230,7 @@ void CCardHeroView::OnBnClickedAction2()
 									MessageBox("行动力不足，无法释放！");
 								}
 								else{
-									if (player_bufflist2[0] == 1){//骑乘
+									if (player_tiance->getStatus() == 1){//骑乘
 										player2_skill_record[nSel_player2] = 1;//标记该技能本回合已释放
 										outFightDairy(player_tiance->getCharId(), player_cangjian->getCharId(), "破重围", 5, player_tiance->getCounterDamage(), player_cangjian->getSufferDamage(), fight_dairy_count++);
 										if (player_bufflist2[3] != 0){//徐如林buff的林状态，打出伤害回复1点血量
@@ -1417,18 +1417,13 @@ void CCardHeroView::OnBnClickedEnd2()
 			refreshBuffList1();
 		}
 
+		
 
-		if (player_bufflist2[14] != 0){//对破坚阵进行判定
-			player_cangjian->setActRight(0);
-			player_tiance->setActRight(1);
-			if (player_bufflist2[0] != 0){
-				player_tiance->setAct(BASIC_ACT + 1);//骑乘状态下补满至3+1点
-			}
-			else{
-				player_tiance->setAct(BASIC_ACT);//未骑乘状态下补满至3点
-			}
-			player_bufflist2[14]--;
-			refreshBuffList2();
+		if (player_bufflist1[14] != 0){//对破坚阵进行判定
+			
+			player_bufflist1[14]--;
+			
+			refreshBuffList1();
 		}
 
 		if (player_bufflist1[15] != 0){//对破风进行判定
@@ -1466,7 +1461,7 @@ void CCardHeroView::OnBnClickedEnd2()
 			player_cangjian->setAct(BASIC_ACT + 1);//问水诀下行动力补满至4点
 		else
 			player_cangjian->setAct(BASIC_ACT);//山居剑意下补满至3点
-		for (int i = 0; i < 11; i++)//重置藏剑技能释放记录
+		for (int i = 0; i < 12; i++)//重置藏剑技能释放记录
 			player1_skill_record[i] = 0;
 
 
